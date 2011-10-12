@@ -1,4 +1,4 @@
-# Sample IPython 0.12+ notebooks for machine leaorning stuff
+# Sample IPython 0.12+ notebooks for machine learning stuff
 
 ## Screenshots
 
