@@ -41,7 +41,7 @@ fi
 
 # (Re)start the notebook process
 cd ~/notebooks
-pkill -9 -f "disabled-ipython-browser"
+pkill -9 -f "disabled-ipython-browser" || echo "Nothing to kill"
 nohup ~/venv/bin/ipython notebook \
     --ip="*" \
     --browser="disabled-ipython-browser" &
