@@ -1,7 +1,8 @@
 #!/bin/sh
 # Script to quickly setup an ipython notebook env on a stock Ubuntu 13.04
 
-set +ex
+set -ex
+
 
 sudo apt-get install -y \
     python-numpy python-scipy python-dev libatlas-dev \
@@ -13,9 +14,12 @@ cd ~
 if [ ! -d "venv" ]; then
     virtualenv --system-site-packages venv
 fi
-source venv/bin/activate
+. venv/bin/activate
 
 pip install scikit-learn ipython[notebook]
+
+git config --global user.name "Olivier Grisel"
+git config --global user.email olivier.grisel@ensta.org
 
 if [ ! -x "~/.ssh/config" ]; then
     echo "Host github.com" >> ~/.ssh/config
@@ -40,4 +44,4 @@ pkill -9 -f "disabled-ipython-browser"
 nohup ~/venv/bin/ipython notebook \
     --ip="*" \
     --browser="disabled-ipython-browser" &
-cd ~
+
