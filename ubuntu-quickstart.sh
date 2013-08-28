@@ -8,6 +8,8 @@ sudo apt-get install -y \
     python-zmq python-pip python-virtualenv \
     git numactl htop
 
+cd ~
+
 if [ ! -d "venv" ]; then
     virtualenv --system-site-packages venv
 fi
@@ -15,9 +17,9 @@ source venv/bin/activate
 
 pip install scikit-learn ipython[notebook]
 
-if [ ! -x ".ssh/config" ]; then
-    echo "Host github.com" >> .ssh/config
-    echo "    StrictHostKeyChecking no" >> .ssh/config
+if [ ! -x "~/.ssh/config" ]; then
+    echo "Host github.com" >> ~/.ssh/config
+    echo "    StrictHostKeyChecking no" >> ~/.ssh/config
 fi
 
 if [ ! -d "notebooks" ]; then
