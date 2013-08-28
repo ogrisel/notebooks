@@ -7,10 +7,11 @@ set -ex
 sudo apt-get install -y \
     python-numpy python-scipy python-dev libatlas-dev \
     python-zmq python-pip python-virtualenv \
-    git numactl htop
+    git numactl htop vim
+
+sudo update-alternatives --set editor /usr/bin/vim.basic
 
 cd ~
-
 if [ ! -d "venv" ]; then
     virtualenv --system-site-packages venv
 fi
