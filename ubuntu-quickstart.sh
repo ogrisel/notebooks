@@ -23,8 +23,8 @@ git config --global user.name "Olivier Grisel"
 git config --global user.email olivier.grisel@ensta.org
 
 if [ ! -x "$HOME/.ssh/config" ]; then
-    if f [ ! -d "$HOME/.ssh" ];
-        mkdir $HOME//.ssh
+    if f [ ! -d "$HOME/.ssh" ]; then
+        mkdir $HOME/.ssh
     fi
     echo "Host github.com" >> $HOME/.ssh/config
     echo "    StrictHostKeyChecking no" >> $HOME/.ssh/config
@@ -36,10 +36,10 @@ fi
 
 if [ -d "/mnt/resource" ]; then
     # Azure
-    DATA_ROOT = /mnt/resource
+    DATA_ROOT=/mnt/resource
 else
     # EC2
-    DATA_ROOT = /mnt
+    DATA_ROOT=/mnt
 fi
 
 if [ ! -d "$DATA_ROOT/$USER" ]; then
