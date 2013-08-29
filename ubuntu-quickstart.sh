@@ -17,7 +17,8 @@ if [ ! -d "venv" ]; then
 fi
 . venv/bin/activate
 
-pip install scikit-learn ipython[notebook]
+pip install scikit-learn ipython[notebook] blosc
+pip install git+https://github.com/esc/bloscpack
 
 git config --global user.name "Olivier Grisel"
 git config --global user.email olivier.grisel@ensta.org
