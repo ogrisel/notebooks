@@ -7,7 +7,7 @@ set -ex
 sudo apt-get install -y \
     python-numpy python-scipy python-dev libatlas-dev \
     python-zmq python-pip python-virtualenv \
-    git numactl htop vim
+    git numactl htop vim python-matplotlib
 
 sudo update-alternatives --set editor /usr/bin/vim.basic
 
