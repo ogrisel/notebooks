@@ -7,7 +7,7 @@ set -ex
 sudo apt-get install -y \
     python-numpy python-scipy python-dev libatlas-dev \
     python-zmq python-pip python-virtualenv \
-    git numactl htop vim python-matplotlib
+    git libnuma-dev numactl htop vim python-matplotlib libevent-dev
 
 sudo update-alternatives --set editor /usr/bin/vim.basic
 
@@ -17,7 +17,7 @@ if [ ! -d "venv" ]; then
 fi
 . venv/bin/activate
 
-pip install scikit-learn ipython[notebook] blosc apache-libcloud
+pip install scikit-learn ipython[notebook] blosc apache-libcloud gevent numa
 pip install git+https://github.com/esc/bloscpack
 
 git config --global user.name "Olivier Grisel"
