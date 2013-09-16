@@ -1,0 +1,4 @@
+[account]
+libcloud_provider = azure_blobs
+account_name = TODO
+account_secret = deadcafe==
