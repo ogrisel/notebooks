@@ -3,3 +3,5 @@
 *.so
 nohup.out
 *.ini
+*.pkl
+*.npy
