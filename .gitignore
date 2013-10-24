@@ -6,3 +6,4 @@ nohup.out
 *.pkl
 *.npy
 joblib
+*.nii
