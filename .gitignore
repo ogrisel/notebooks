@@ -7,3 +7,5 @@ nohup.out
 *.npy
 joblib
 *.nii
+*_pkl
+nilearn_data
