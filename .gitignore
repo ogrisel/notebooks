@@ -10,3 +10,7 @@ joblib
 *_pkl
 nilearn_data
 Untitled*.ipynb
+*.dat
+*.lprof
+*.html
+*.pyc
