@@ -15,3 +15,5 @@ Untitled*.ipynb
 *.html
 *.pyc
 adult.data
+*.txt
+
