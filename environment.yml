@@ -1,0 +1,4 @@
+dependencies:
+- scikit-learn
+- matplotlib
+- pandas
