@@ -32,7 +32,8 @@ class EpochSampler(object):
 
 class GaussianMixtureSGD(object):
     def __init__(self, n_components=5, learning_rate=0.1, patience=3,
-                 batch_size=10, max_iter=1000, session=None, random_seed=0):
+                 batch_size=10, max_iter=1000, session=None,
+                 means_init=None, random_seed=0):
         self.n_components = n_components
         self.random_seed = random_seed
         self.learning_rate = learning_rate
@@ -40,6 +41,7 @@ class GaussianMixtureSGD(object):
         self.max_iter = max_iter
         self.batch_size = batch_size
         self.session = session
+        self.means_init = means_init
 
     def _make_model(self, n_features, dtype=np.float32):
         self._component_variables = defaultdict(list)
@@ -64,23 +66,27 @@ class GaussianMixtureSGD(object):
             name='triangular_mask')
         for k in range(self.n_components):
             with tf.variable_scope('component_%03d' % k):
-                mu = tf.Variable(
-                    tf.zeros(shape=(n_features,), dtype=dtype),
-                    name='mu_%03d' % k)
+                if self.means_init is not None:
+                    m = np.asarray(self.means_init[k], dtype=dtype)
+                else:
+                    m = tf.zeros(shape=(n_features,), dtype=dtype)
+                mu = tf.Variable(m, name='mu_%03d' % k)
                 self._component_variables['mu'].append(mu)
                 d = tf.Variable(
-                    tf.truncated_normal(shape=[n_features],
-                                        stddev=1 / sqrt(n_features),
-                                        dtype=dtype,
-                                        seed=self.random_seed + k),
+                    -2 * tf.ones(shape=[n_features], dtype=dtype),
+                    #tf.truncated_normal(shape=[n_features],
+                    #                    stddev=1 / sqrt(n_features),
+                    #                    dtype=dtype,
+                    #                    seed=self.random_seed + k),
                     name='d_%03d' % k)
 
                 self._component_variables['d'].append(d)
                 H = tf.Variable(
-                    tf.truncated_normal(shape=(n_features, n_features),
-                                        stddev=1 / sqrt(n_features),
-                                        dtype=dtype,
-                                        seed=self.random_seed + k),
+                    tf.zeros(shape=(n_features, n_features), dtype=dtype),
+                    #tf.truncated_normal(shape=(n_features, n_features),
+                    #                    stddev=1 / sqrt(n_features),
+                    #                    dtype=dtype,
+                    #                    seed=self.random_seed + k),
                     name='H_%03d' % k)
                 # M is an element-wise mask to set all diagonal and triangular
                 # uppper entries of of H to zero:
@@ -109,6 +115,14 @@ class GaussianMixtureSGD(object):
         else:
             session = self.session
         session.run(tf.initialize_all_variables())
+        for name, variables in self._component_variables.items():
+            print(name)
+            for var in variables:
+                print(var.eval())
+            if name == 'P':
+                print('C')
+                for var in variables:
+                    print(np.linalg.inv(var.eval()))
         self._train = lambda data: session.run(
             train_op, feed_dict={X: data}
         )
