@@ -102,6 +102,10 @@ class GaussianMixtureSGD(object):
         # TODO: would it be better to find a way to vectorize the computation
         # of the log-likelihoods to avoid using tf.pack to make tensorflow
         # run somehow faster?
+
+        # XXX: the following is wrong! We cannot get the loglikelood of a mixture
+        # this way... I don't have time to fix it now though.
+        # It should use tf.reduce_logsumexp instead.
         self._loglik = tf.reduce_sum(
             tf.mul(tf.transpose(tf.pack(logliks)), self._normalized_weights),
             reduction_indices=1)
