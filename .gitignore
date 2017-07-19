@@ -16,4 +16,4 @@ Untitled*.ipynb
 *.pyc
 adult.data
 *.txt
-
+sparse_chunks
