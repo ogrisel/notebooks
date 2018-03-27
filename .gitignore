@@ -17,3 +17,4 @@ Untitled*.ipynb
 adult.data
 *.txt
 sparse_chunks
+*.hdf5
