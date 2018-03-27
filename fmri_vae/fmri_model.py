@@ -11,8 +11,8 @@ def crop_5_8_8(data):
     return data[:, :5, :8, :8]
 
 
-def make_models(input_shape=(40, 64, 64, 1), latent_dim=128,
-                low_res_shape=(2, 2, 2, 128), dropout_latent=0.1):
+def make_models(input_shape=(40, 64, 64, 1), latent_dim=256,
+                low_res_shape=(2, 2, 2, 128), dropout=0.2):
     encoder = Sequential([
         Conv3D(16, kernel_size=3, activation='relu',
                padding="same", input_shape=input_shape),
@@ -38,12 +38,13 @@ def make_models(input_shape=(40, 64, 64, 1), latent_dim=128,
         Conv3D(latent_dim, kernel_size=3, padding="same",
                strides=2, activation='relu'),
         Flatten(),
-        Dense(latent_dim)
+        Dropout(dropout),
+        Dense(latent_dim),
     ], name="encoder")
 
     decoder = Sequential([
         Dense(np.prod(low_res_shape), input_shape=(latent_dim,)),
-        Dropout(dropout_latent),
+        Dropout(dropout),
         Reshape(low_res_shape),
         Conv3DTranspose(128, kernel_size=3, strides=2, activation='relu',
                         padding="same"),
@@ -82,10 +83,13 @@ if __name__ == "__main__":
     smoothed_img = image.smooth_img(fmri_filename, 2)
     
     smoothed_data = smoothed_img.get_data().transpose(3, 0, 1, 2)
+    #mean = smoothed_data.mean(axis=0)
+    #smoothed_data -= mean
+    #scale = smoothed_data.std(axis=0) + 1e-6
+    scale = smoothed_data.std()  # global scale
+    smoothed_data /= scale
     smoothed_data = smoothed_data[:, :, :, :, None]
     input_shape = smoothed_data.shape[1:]
-    scale = smoothed_data.std()
-    smoothed_data = smoothed_data / scale
     smoothed_data_train = smoothed_data[:1200]
     smoothed_data_test = smoothed_data[1200:]
     
